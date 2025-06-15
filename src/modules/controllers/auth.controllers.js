@@ -53,22 +53,27 @@ export const verifyEmail = ErrorHandlerService(async (req, res) => {
 });
 
 
-export const login=ErrorHandlerService(async(req,res)=>{
-  const {Email,Password}=req.body
-  const user=await userModel.findOne({Email});
-  const company=await companyModel.findOne({Email});
-  if(!user && !company) throw new AppError("user not found",404)
-  let result=user?user:company;
-  const isPasswordMatch=await bcryptCompareService(Password,result.Password)
-  if(!isPasswordMatch) throw new AppError("password not match",401)
-  const token=jwtEncodingService({id:result._id,email:result.Email})
-  res.status(200).json({message:"login successfully",data:{user:result,token}})
-})
+export const login = ErrorHandlerService(async (req, res) => {
+  const { Email, Password, Remember } = req.body;
+  const user = await userModel.findOne({ Email });
+  const company = await companyModel.findOne({ Email });
+  if (!user && !company) throw new AppError("User not found", 404);
+  let result = user ? user : company;
+  const isPasswordMatch = await bcryptCompareService(Password, result.Password);
+  if (!isPasswordMatch) throw new AppError("Password does not match", 401);
+  const expiresIn = Remember ? '30d' : '1h';
+  const token = jwtEncodingService({ id: result._id, email: result.Email,type:result.Type?"company":"user" }, expiresIn);
+  res.status(200).json({
+    message: "Login successful",
+    data: { token }
+  });
+});
 
 export const resetPasswordReq=ErrorHandlerService(async(req,res)=>{
   const user=req.findUser;
   const otp=otpGeneratorService(6);
-  const token=jwtEncodingService({id:user._id,Email:user.Email,otp});
+  let exp=Remember?"30d":"1d";
+  const token=jwtEncodingService({id:user._id,Email:user.Email,otp},exp);
   sendEmailService({
     to:user.Email,
     subject:"reset password",

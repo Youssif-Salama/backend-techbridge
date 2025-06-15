@@ -1,4 +1,4 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose from "mongoose";
 
 const userSchema=new mongoose.Schema({
   Img:{
@@ -11,6 +11,8 @@ const userSchema=new mongoose.Schema({
     minlength:[3,"name minimum 3 char"],
   },
   Lname:String,
+  Description:String,
+  Slogna:String,
   Email:{
     type:String,
     required:true,
@@ -27,11 +29,23 @@ const userSchema=new mongoose.Schema({
   },
   skills: { type: [String], default: [] },
   Address:{
-    country:String,
-    city:String,
-    description:String
+    type:String
   },
+  Slogan:String,
   Experience:Number,
+  Followers:[{
+    type:mongoose.Schema.Types.ObjectId,
+    refPath:"makerModel"
+  }],
+  UserMeta:{
+    ProfileViews:Number,
+    PostsViews:Number,
+    SearchViews:Number
+  },
+  makerModel:{
+    type:String,
+    enum:["user","company"]
+  },
   Languages:[String],
   Gender:{
     type:String,
@@ -41,6 +55,13 @@ const userSchema=new mongoose.Schema({
     type:Boolean,
     default:false
   }
+  ,Visits:[
+    {
+      type:mongoose.Schema.Types.ObjectId,
+      refPath:"makerModel",
+      no:Number
+    }
+  ]
 },{timestamps:true})
 
 export default mongoose.model("user",userSchema)

@@ -46,8 +46,8 @@ export const useGemini = ErrorHandlerService(async (req, res) => {
       });
     });
     res.status(200).json({
-      message: "Gemini generated successfully",
-      data: gemini,
+      message: "generated successfully",
+      data: gemini?.candidates[0]?.content?.parts,
     });
   } catch (error) {
     throw new AppError("Error processing Gemini service", 500);

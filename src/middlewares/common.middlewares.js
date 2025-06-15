@@ -24,16 +24,6 @@ export const executionMiddleware = (responseObj) => ErrorHandlerService(async(re
     search:res.locals.searchResults,
     meta:res.meta
   };
-  // apply elasticsearch
-  if(req.method=="POST"){
-    await insertDocument("tech_bridge_posts",result._id, result);
-  }
-  else if(req.method=="DELETE"){
-    await deleteDocument("tech_bridge_posts",result._id);
-  }
-  else if(req.method=="PUT"){
-    await insertDocument("tech_bridge_posts",result._id, result);
-  }
   res.status(responseObj?.success?.statusCode || 200).json(reqResult);
 })
 
@@ -62,7 +52,8 @@ export const combineFilesWithBodyMiddleware=ErrorHandlerService(async(req,res,ne
   for(const file of files){
     arrangedFiles.push({
       name:file.originalname,
-      url:file.path
+      url:file.path,
+      type:file.mimetype
     })
   }
   req.body.files=arrangedFiles;

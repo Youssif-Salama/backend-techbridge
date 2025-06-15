@@ -5,26 +5,43 @@ import jwt from "jsonwebtoken";
 export const authentication = ErrorHandlerService(async (req, res, next) => {
   const token = req.header("token");
   if (!token) throw new AppError("token not found", 401);
-  await jwt.verify(token, process.env.JWT_SECRET, async(error, decodedToken) => {
-      if (error) throw new AppError(error.message, 401);
-      req.user = decodedToken;
-      next();
-  })
-})
+  try {
+    const decodedToken = await jwt.verify(token, process.env.JWT_SECRET);
+    req.user = decodedToken;
+    next();
+  } catch (error) {
+    throw new AppError(error.message, 401);
+  }
+});
 
 export const authorization = (allowedModels) =>
   ErrorHandlerService(async (req, res, next) => {
     const { user } = req;
-    const isUser = await allowedModels.userModel.findById(user.id);
-    const isCompany = await allowedModels.companyModel.findById(user.id);
-    if (!isUser && !isCompany) {
-      throw new AppError("authorization failed", 401);
+    if (!user || !user.id) {
+      throw new AppError("User not authenticated or ID missing for authorization", 401);
     }
-    if (allowedModels?.userModel && isCompany) {
-      throw new AppError("authorization failed", 401);
-    }
-    if (allowedModels?.companyModel && isUser) {
-      throw new AppError("authorization failed", 401);
+    const entityId = user.id;
+
+    const entityIsUser = allowedModels.userModel ? !!(await allowedModels.userModel.findById(entityId)) : false;
+    const entityIsCompany = allowedModels.companyModel ? !!(await allowedModels.companyModel.findById(entityId)) : false;
+
+    const userModelAllowed = !!allowedModels.userModel;
+    const companyModelAllowed = !!allowedModels.companyModel;
+
+    if (userModelAllowed && companyModelAllowed) { // Both types are permissible
+      if (!entityIsUser && !entityIsCompany) {
+        throw new AppError("Authorization failed: Entity must be a user or a company.", 401);
+      }
+    } else if (userModelAllowed) { // Only user type is permissible
+      if (!entityIsUser) {
+        throw new AppError("Authorization failed: Entity must be a user.", 401);
+      }
+    } else if (companyModelAllowed) { // Only company type is permissible
+      if (!entityIsCompany) {
+        throw new AppError("Authorization failed: Entity must be a company.", 401);
+      }
+    } else {
+      throw new AppError("Authorization misconfigured: No valid allowed model types specified.", 500);
     }
     next();
   });

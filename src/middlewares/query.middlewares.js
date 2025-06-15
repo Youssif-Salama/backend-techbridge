@@ -15,7 +15,8 @@ const deleteQueryMiddleware=(model)=>(req,res,next)=>{
   next()
 }
 
-const postQueryMiddleware=(model)=>(req,res,next)=>{
+const
+postQueryMiddleware=(model)=>(req,res,next)=>{
   req.dbQuery=model.create(req.body);
   next()
 }

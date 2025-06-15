@@ -1,5 +1,6 @@
 import ErrorHandlerService from "../../services/error.services.js";
 import companyModel from "../models/company.model.js";
+import employeeModel from "../models/employee.model.js";
 
 export const addEmployees=ErrorHandlerService(async(req,res)=>{
   const {employees}=req.body;
@@ -56,7 +57,7 @@ export const changeBanner=ErrorHandlerService(async(req,res)=>{
 
 
 export const updateMyData=ErrorHandlerService(async(req,res)=>{
-  const {Title,Phone,Address,Type,Description}=req.body;
+  const {Title,Phone,Address,Type,Description,Slogan}=req.body;
   const company=req.user;
   if(!company || !company.id) return res.status(400).json({message:"company not found"});
   const findCompany=await companyModel.findById(company.id);
@@ -66,6 +67,28 @@ export const updateMyData=ErrorHandlerService(async(req,res)=>{
   findCompany.Address=Address;
   findCompany.Type=Type;
   findCompany.Description=Description;
+  findCompany.Slogan=Slogan;
   await findCompany.save();
   res.status(200).json({message:"data updated successfully",data:findCompany})
 })
+
+export const updateMyEmployees=ErrorHandlerService(async(req,res)=>{
+  const {Employees}=req.body;
+  const company=req.user;
+  if(!company || !company.id) return res.status(400).json({message:"company not found"});
+  const findCompany=await companyModel.findById(company.id);
+  if(!findCompany) return res.status(400).json({message:"company not found"});
+  findCompany.Employees=Employees;
+  await findCompany.save();
+  res.status(200).json({message:"data updated successfully",data:findCompany})
+})
+
+export const companyMetaData=ErrorHandlerService(async(req,res)=>{
+  const {useId}=req.query;
+  const user = useId?{id:useId}:req.user;
+  if(!user || !user.id) return res.status(400).json({message:"user not found"});
+  const findCompany=await companyModel.findById(user.id).populate("Employees");
+  const companyEmployees=await employeeModel.find({companyId:user.id});
+  res.status(200).json({message:"data fetched successfully",data:{companyEmployees,findCompany}});
+});
+

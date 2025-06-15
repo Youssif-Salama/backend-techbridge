@@ -19,7 +19,6 @@ export const likePost=ErrorHandlerService(async(req,res)=>{
 
 
 export const commentPost=ErrorHandlerService(async(req,res)=>{
-
   const {id:postId}=req.params;
   const {comment}=req.body;
   const makeComment=await commentModel.create({
@@ -32,3 +31,4 @@ export const commentPost=ErrorHandlerService(async(req,res)=>{
   if(!makeComment) throw new AppError("comment not created",400);
   res.status(200).json({message:"comment added",data:makeComment})
 })
+

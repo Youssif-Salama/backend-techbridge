@@ -5,7 +5,7 @@ const companySchema=new mongoose.Schema({
     name:String,
     url:String
   },
-  banner:{
+  Banner:{
     name:String,
     url:String
   },
@@ -15,6 +15,7 @@ const companySchema=new mongoose.Schema({
     minlength:[1,"name minimum 1 char"],
   },
   Description:String,
+  Slogan:String,
   Email:{
     type:String,
     required:true,
@@ -29,21 +30,32 @@ const companySchema=new mongoose.Schema({
     required:true,
     mathces:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
   },
-  Address:{
-    country:String,
-    city:String,
-    description:String
-  },
+  Address:String,
   Type:{
     type:String,
     enum:["tech","health","beauty","software","it"]
+  },
+  Followers:[{
+      type:mongoose.Schema.Types.ObjectId,
+      refPath:"makerModel"
+    }],
+  makerModel:{
+    type:String,
+    enum:["user","company"]
   },
   Employees:[
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'user'
     }
-  ]
+  ],
+  Visits:[
+      {
+        type:mongoose.Schema.Types.ObjectId,
+        refPath:"makerModel",
+        no:Number
+      }
+    ]
 },{timestamps:true});
 
 export default mongoose.model("company",companySchema)

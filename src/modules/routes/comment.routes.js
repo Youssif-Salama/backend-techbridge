@@ -1,9 +1,10 @@
 import {Router} from "express";
 import { authentication, authorizationMine } from "../../middlewares/auth.middleware.js";
 import commentModel from "../models/comment.model.js";
-import { executionMiddleware } from "../../middlewares/common.middlewares.js";
+import { addMakerIdToBodyMiddleware, executionMiddleware } from "../../middlewares/common.middlewares.js";
 import { filterFeatureMiddleware } from "../../middlewares/features.middlewares.js";
 import { deleteQueryMiddleware, updateQueryMiddleware } from "../../middlewares/query.middlewares.js";
+import { getCommentReplies, postCommentOnComment } from "../controllers/comment.controllers.js";
 
 const commentRouter=Router();
 
@@ -28,6 +29,10 @@ commentRouter.put("/:id",authentication,authorizationMine(commentModel),updateQu
     statusCode:404
   }
 }))
+
+commentRouter.patch("/on-comment/:commentId",authentication,addMakerIdToBodyMiddleware,postCommentOnComment);
+
+commentRouter.get("/:commentId/replies",authentication,getCommentReplies);
 
 
 export default commentRouter;

@@ -3,7 +3,7 @@ const filterFeatureMiddleware=(key,value)=>(req,res,next)=>{
   next();
 }
 
-export const filterQueryUponRelationByIdMiddleware=(key)=>(req,res,next)=>{
+export const filterQueryUponRelationByIdMiddleware=(key,skip)=>(req,res,next)=>{
   if(!req.params.id) {
   req.dbQuery=req.dbQuery.where({[key]:req.user?.id});
   }
@@ -51,34 +51,88 @@ const searchMiddleware = (keys) => (req, res, next) => {
 
   const searchWord = new RegExp(search.trim(), "i");
 
-  req.dbQuery = req.dbQuery || {};
+  if (!req.dbQuery) {
+    req.dbQuery = req.model.find();
+  }
 
-  req.dbQuery.$or = keys.map((key) => ({
+  const searchConditions = keys.map((key) => ({
     [key]: { $regex: searchWord }
   }));
+
+  req.dbQuery = req.dbQuery.where({ $or: searchConditions });
 
   next();
 };
 
-const lowSearchMiddleware=(keys)=>(req,res,next)=>{
-  const query=req.query;
-  if(Array.from(Object.keys(query)).length===0) return next();
-  const searchWordsObj={};
-  for(const key in keys){
-    if(query[key]){
-      searchWordsObj[key]=query[key];
+const lowSearchMiddleware = (filterKeys = [],forWhat) => (req, res, next) => {
+  if(!req.query.word) return next();
+  console.log(req.query);
+
+  const { word = "", skipAddons } = req.query;
+  const searchWord = new RegExp(word.trim(), "i");
+
+  // Initialize dbQuery if not already initialized
+  if (!req.dbQuery) req.dbQuery = req.model.find();
+
+  // Default fields to search via regex
+  let regexSearchFields = ["title", "description"];
+  if(forWhat=="company"){
+    regexSearchFields=["Title","Description","Email"]
+  }
+  if(forWhat=="company"){
+    regexSearchFields=["title", "description","hashtags"]
+  }
+  const searchConditions = regexSearchFields.map((key) => ({
+    [key]: { $regex: searchWord }
+  }));
+
+  req.dbQuery = req.dbQuery.where({ $or: searchConditions });
+
+  // Handle additional filters only if skipAddons is NOT true
+  if (!["true", "1", true].includes(skipAddons)) {
+    const filters = {};
+
+    filterKeys.forEach((key) => {
+      // Convert to number if value is numeric (like experience)
+      let value = req.query[key];
+
+      if (key === "experience" && value !== undefined) {
+        filters[key] = Number(value);
+      } else if (key === "salary" && req.query.salary) {
+        const { from, to } = req.query.salary;
+        if (from !== undefined) filters["salary.from"] = Number(from);
+        if (to !== undefined) filters["salary.to"] = Number(to);
+      } else if (value !== undefined) {
+        filters[key] = value;
+      }
+    });
+
+    // Apply extra filters
+    if (Object.keys(filters).length > 0) {
+      req.dbQuery = req.dbQuery.where(filters);
     }
   }
-  req.dbQuery=req.dbQuery.where(searchWordsObj);
+
+  next();
+};
+
+
+const populateMiddleware=(key)=>(req,res,next)=>{
+  req.dbQuery=req.dbQuery.populate(key);
   next();
 }
 
-
+const selectorMiddleware=(keys)=>(req,res,next)=>{
+  req.dbQuery=req.dbQuery.select(keys);
+  next();
+}
 
 export {
   filterFeatureMiddleware,
   sortingFeatureMiddlware,
   paginationFeatureMiddleware,
   searchMiddleware,
-  lowSearchMiddleware
+  lowSearchMiddleware,
+  populateMiddleware,
+  selectorMiddleware
 }

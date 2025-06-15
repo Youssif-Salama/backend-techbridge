@@ -43,4 +43,5 @@ export const loginValidationSchema = Joi.object({
   Password: Joi.string().required().messages({
     "string.empty": "Password is required",
   }),
+  Remember: Joi.boolean().optional()
 });

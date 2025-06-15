@@ -13,6 +13,14 @@ const jobSchema=new mongoose.Schema({
     enum:["high school","university","master"]
   },
   experience:Number,
+  salary:{
+    from:Number,
+    to:Number
+  },
+  appliers:[{
+    type:mongoose.Schema.Types.ObjectId,
+    ref:"user"
+  }],
   expiresAt:Date,
   makerId:{
     type: mongoose.Schema.Types.ObjectId,

@@ -4,7 +4,7 @@ import { deleteQueryMiddleware, getQueryMiddleware, postQueryMiddleware, updateQ
 import postModel from "../models/post.model.js";
 import { addMakerIdToBodyMiddleware, combineFilesWithBodyMiddleware, executionMiddleware } from "../../middlewares/common.middlewares.js";
 import { upload } from "../../services/multer.services.js";
-import { filterFeatureMiddleware, filterQueryUponRelationByIdMiddleware, paginationFeatureMiddleware, searchMiddleware, sortingFeatureMiddlware } from "../../middlewares/features.middlewares.js";
+import { filterFeatureMiddleware, filterQueryUponRelationByIdMiddleware, lowSearchMiddleware, paginationFeatureMiddleware, populateMiddleware, searchMiddleware, selectorMiddleware, sortingFeatureMiddlware } from "../../middlewares/features.middlewares.js";
 import { commentPost, likePost } from "../controllers/post.controllers.js";
 import commentModel from "../models/comment.model.js";
 
@@ -21,7 +21,7 @@ postRouter.post("/",authentication,upload.array("files"),addMakerIdToBodyMiddlew
   }
 }));
 
-postRouter.get("/",authentication,getQueryMiddleware(postModel),searchMiddleware(["title","description","hashtags"]),sortingFeatureMiddlware("createdAt","asc"),paginationFeatureMiddleware(20,0),executionMiddleware({
+postRouter.get("/",authentication,getQueryMiddleware(postModel),sortingFeatureMiddlware("createdAt","asc"),lowSearchMiddleware([""],"post"),paginationFeatureMiddleware(20,0),populateMiddleware({path:"makerId",select:"-Password -Email -__v -createdAt -updatedAt -Employees -Banner -Description -Phone -Address -Type -Followers"}),executionMiddleware({
   success:{
     message:"posts fetched successfully",
     statusCode:200
@@ -32,8 +32,8 @@ postRouter.get("/",authentication,getQueryMiddleware(postModel),searchMiddleware
   }
 }));
 
-
-postRouter.get("/myposts",authentication,getQueryMiddleware(postModel),filterQueryUponRelationByIdMiddleware("makerId"),sortingFeatureMiddlware("createdAt","asc"),paginationFeatureMiddleware(20,0),executionMiddleware({
+// get one post
+postRouter.get("/one/:id",authentication,getQueryMiddleware(postModel),filterFeatureMiddleware("_id","id"),populateMiddleware({path:"makerId",select:"-Password -Email -__v -createdAt -updatedAt -Employees -Banner -Description -Phone -Address -Type -Followers"}),executionMiddleware({
   success:{
     message:"posts fetched successfully",
     statusCode:200
@@ -43,6 +43,30 @@ postRouter.get("/myposts",authentication,getQueryMiddleware(postModel),filterQue
     statusCode:404
   }
 }))
+
+
+postRouter.get("/myposts",authentication,getQueryMiddleware(postModel),filterQueryUponRelationByIdMiddleware("makerId"),sortingFeatureMiddlware("createdAt","asc"),paginationFeatureMiddleware(20,0),populateMiddleware({path:"makerId",select:"-Password -Email -__v -createdAt -updatedAt -Employees -Banner -Description -Phone -Address -Type -Followers"}),executionMiddleware({
+  success:{
+    message:"posts fetched successfully",
+    statusCode:200
+  },
+  fail:{
+    message:"posts not found",
+    statusCode:404
+  }
+}))
+
+postRouter.get("/specificOne/:id",authentication,getQueryMiddleware(postModel),filterFeatureMiddleware("makerId","id"),sortingFeatureMiddlware("createdAt","asc"),paginationFeatureMiddleware(20,0),populateMiddleware({path:"makerId",select:"-Password -Email -__v -createdAt -updatedAt -Employees -Banner -Description -Phone -Address -Type -Followers"}),executionMiddleware({
+  success:{
+    message:"posts fetched successfully",
+    statusCode:200
+  },
+  fail:{
+    message:"posts not found",
+    statusCode:404
+  }
+}))
+
 
 postRouter.get("/user/:id",authentication,getQueryMiddleware(postModel),filterFeatureMiddleware("makerId","id"),sortingFeatureMiddlware("createdAt","asc"),paginationFeatureMiddleware(20,0),executionMiddleware({
   success:{
@@ -57,7 +81,7 @@ postRouter.get("/user/:id",authentication,getQueryMiddleware(postModel),filterFe
 
 
 postRouter.get("/:id/comments",authentication,getQueryMiddleware(commentModel),filterFeatureMiddleware("postId","id"),
-paginationFeatureMiddleware(20,0),sortingFeatureMiddlware("createdAt","desc"),executionMiddleware({
+paginationFeatureMiddleware(20,0),sortingFeatureMiddlware("createdAt","desc"),selectorMiddleware("-comments"),populateMiddleware({path:"makerId",select:"-Password -__v -createdAt -updatedAt -Employees -Banner -Description -Phone -Address -Type -Followers"}),executionMiddleware({
   success:{
     message:"post comments fetched successfully",
     statusCode:200

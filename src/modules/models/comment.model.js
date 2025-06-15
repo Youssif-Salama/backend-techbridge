@@ -1,20 +1,37 @@
 import mongoose from "mongoose";
 
-const commentSchema=new mongoose.Schema({
-  comment:String,
-  postId:{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'post'
+const commentSchema = new mongoose.Schema(
+  {
+    comment: String,
+    comments: [
+      {
+        comment: String,
+        makerId: {
+          type: mongoose.Schema.Types.ObjectId,
+          refPath: "makerModel",
+        },
+        makerModel: {
+          type: String,
+          required: true,
+          enum: ["user", "company"],
+        },
+      },
+    ],
+    postId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "post",
+    },
+    makerId: {
+      type: mongoose.Schema.Types.ObjectId,
+      refPath: "makerModel",
+    },
+    makerModel: {
+      type: String,
+      required: true,
+      enum: ["user", "company"],
+    },
   },
-  makerId:{
-    type: mongoose.Schema.Types.ObjectId,
-    refPath:"makerModel"
-  },
-  makerModel:{
-    type:String,
-    required:true,
-    enum:["user","company"]
-  }
-},{timestamps:true})
+  { timestamps: true }
+);
 
-export default mongoose.model("comment",commentSchema)
+export default mongoose.model("comment", commentSchema);
