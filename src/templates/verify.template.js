@@ -134,6 +134,14 @@ a[x-apple-data-detectors],
                  </tr>
                </table><!--[if mso]></td><td style="width:5px"></td><td style="width:208px" valign="top"><![endif]-->
                <table cellpadding="0" cellspacing="0" align="right" class="es-right" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;float:right">
+                 <tr>
+                  <td align="left" style="padding:0;Margin:0;width:208px">
+                   <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
+                     <tr>
+                      <td align="center" style="padding:0;Margin:0;font-size:0px"><a target="_blank" href="https://viewstripo.email" style="mso-line-height-rule:exactly;text-decoration:none;color:#FFFFFF;font-size:16px"><img src="https://ftnlhak.stripocdn.email/content/guids/CABINET_4bcca2afc9156fbbd6e09babbb92c2d0/images/5883092.png" alt="" width="208" class="adapt-img" style="display:block;font-size:16px;border:0;outline:none;text-decoration:none"></a></td>
+                     </tr>
+                   </table></td>
+                 </tr>
                </table><!--[if mso]></td></tr></table><![endif]--></td>
              </tr>
            </table></td>
