@@ -1,6 +1,5 @@
 export default function verifyTemplate(data){
-  return `
-  <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  return `  <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html dir="ltr" xmlns="http://www.w3.org/1999/xhtml" xmlns:o="urn:schemas-microsoft-com:office:office" lang="en">
  <head>
   <meta charset="UTF-8">
@@ -133,18 +132,7 @@ a[x-apple-data-detectors],
                    </table></td>
                  </tr>
                </table><!--[if mso]></td><td style="width:5px"></td><td style="width:208px" valign="top"><![endif]-->
-               <table cellpadding="0" cellspacing="0" align="right" class="es-right" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;float:right">
-                 <tr>
-                  <td align="left" style="padding:0;Margin:0;width:208px">
-                   <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
-                     <tr>
-                      <td align="center" style="padding:0;Margin:0;font-size:0px"><a target="_blank" href="https://viewstripo.email" style="mso-line-height-rule:exactly;text-decoration:none;color:#FFFFFF;font-size:16px"><img src="https://ftnlhak.stripocdn.email/content/guids/CABINET_4bcca2afc9156fbbd6e09babbb92c2d0/images/5883092.png" alt="" width="208" class="adapt-img" style="display:block;font-size:16px;border:0;outline:none;text-decoration:none"></a></td>
-                     </tr>
-                   </table></td>
-                 </tr>
-               </table><!--[if mso]></td></tr></table><![endif]--></td>
-             </tr>
-           </table></td>
+               </td>
          </tr>
        </table>
        <table cellpadding="0" cellspacing="0" align="center" class="es-content" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;width:100%;table-layout:fixed !important">
@@ -199,65 +187,9 @@ a[x-apple-data-detectors],
              </tr>
            </table></td>
          </tr>
-       </table>
-       <table cellpadding="0" cellspacing="0" align="center" class="es-footer" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;width:100%;table-layout:fixed !important;background-color:transparent;background-repeat:repeat;background-position:center top">
-         <tr>
-          <td align="center" style="padding:0;Margin:0">
-           <table align="center" cellpadding="0" cellspacing="0" bgcolor="#00000000" class="es-footer-body" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;background-color:#1D9AD1;border-radius:10px;width:560px" role="none">
-             <tr>
-              <td align="left" bgcolor="#38761d" style="Margin:0;padding-bottom:30px;padding-left:20px;padding-top:30px;padding-right:20px;background-color:#38761d">
-               <table cellpadding="0" cellspacing="0" width="100%" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
-                 <tr>
-                  <td align="left" style="padding:0;Margin:0;width:520px">
-                   <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
-                     <tr>
-                      <td style="padding:0;Margin:0">
-                       <table cellpadding="0" cellspacing="0" width="100%" class="es-menu" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
-                         <tr class="links">
-                          <td align="center" valign="top" width="25%" style="Margin:0;border:0;padding-bottom:10px;padding-top:10px;padding-right:5px;padding-left:5px">
-                           <div style="vertical-align:middle;display:block">
-                            <a target="_blank" href="https://viewstripo.email" style="mso-line-height-rule:exactly;text-decoration:none;font-family:'trebuchet ms', 'lucida grande', 'lucida sans unicode', 'lucida sans', tahoma, sans-serif;display:block;color:#FFFFFF;font-size:12px;font-weight:bold">About us</a>
-                           </div></td>
-                          <td align="center" valign="top" width="25%" style="Margin:0;border:0;padding-bottom:10px;padding-top:10px;padding-right:5px;padding-left:5px">
-                           <div style="vertical-align:middle;display:block">
-                            <a target="_blank" href="https://viewstripo.email" style="mso-line-height-rule:exactly;text-decoration:none;font-family:'trebuchet ms', 'lucida grande', 'lucida sans unicode', 'lucida sans', tahoma, sans-serif;display:block;color:#FFFFFF;font-size:12px;font-weight:bold">News</a>
-                           </div></td>
-                          <td align="center" valign="top" width="25%" style="Margin:0;border:0;padding-bottom:10px;padding-top:10px;padding-right:5px;padding-left:5px">
-                           <div style="vertical-align:middle;display:block">
-                            <a target="_blank" href="https://viewstripo.email" style="mso-line-height-rule:exactly;text-decoration:none;font-family:'trebuchet ms', 'lucida grande', 'lucida sans unicode', 'lucida sans', tahoma, sans-serif;display:block;color:#FFFFFF;font-size:12px;font-weight:bold">Career</a>
-                           </div></td>
-                          <td align="center" valign="top" width="25%" style="Margin:0;border:0;padding-bottom:10px;padding-top:10px;padding-right:5px;padding-left:5px">
-                           <div style="vertical-align:middle;display:block">
-                            <a target="_blank" href="https://viewstripo.email" style="mso-line-height-rule:exactly;text-decoration:none;font-family:'trebuchet ms', 'lucida grande', 'lucida sans unicode', 'lucida sans', tahoma, sans-serif;display:block;color:#FFFFFF;font-size:12px;font-weight:bold">The shops</a>
-                           </div></td>
-                         </tr>
-                       </table></td>
-                     </tr>
-                     <tr>
-                      <td align="center" style="padding:0;Margin:0;padding-bottom:10px;padding-top:10px;font-size:0">
-                       <table cellpadding="0" cellspacing="0" class="es-table-not-adapt es-social" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
-                         <tr>
-                          <td align="center" valign="top" style="padding:0;Margin:0;padding-right:20px"><a target="_blank" href="https://viewstripo.email" style="mso-line-height-rule:exactly;text-decoration:none;color:#FFFFFF;font-size:12px"><img title="Facebook" src="https://ftnlhak.stripocdn.email/content/assets/img/social-icons/circle-white/facebook-circle-white.png" alt="Fb" width="24" height="24" style="display:block;font-size:16px;border:0;outline:none;text-decoration:none"></a></td>
-                          <td align="center" valign="top" style="padding:0;Margin:0;padding-right:20px"><a target="_blank" href="https://viewstripo.email" style="mso-line-height-rule:exactly;text-decoration:none;color:#FFFFFF;font-size:12px"><img title="Х" src="https://ftnlhak.stripocdn.email/content/assets/img/social-icons/circle-white/x-circle-white.png" alt="Х" width="24" height="24" style="display:block;font-size:16px;border:0;outline:none;text-decoration:none"></a></td>
-                          <td align="center" valign="top" style="padding:0;Margin:0;padding-right:20px"><a target="_blank" href="https://viewstripo.email" style="mso-line-height-rule:exactly;text-decoration:none;color:#FFFFFF;font-size:12px"><img title="Instagram" src="https://ftnlhak.stripocdn.email/content/assets/img/social-icons/circle-white/instagram-circle-white.png" alt="Inst" width="24" height="24" style="display:block;font-size:16px;border:0;outline:none;text-decoration:none"></a></td>
-                          <td align="center" valign="top" style="padding:0;Margin:0"><a target="_blank" href="https://viewstripo.email" style="mso-line-height-rule:exactly;text-decoration:none;color:#FFFFFF;font-size:12px"><img title="Youtube" src="https://ftnlhak.stripocdn.email/content/assets/img/social-icons/circle-white/youtube-circle-white.png" alt="Yt" width="24" height="24" style="display:block;font-size:16px;border:0;outline:none;text-decoration:none"></a></td>
-                         </tr>
-                       </table></td>
-                     </tr>
-                     <tr>
-                      <td align="center" style="padding:0;Margin:0;padding-bottom:10px;padding-top:10px"><p style="Margin:0;mso-line-height-rule:exactly;font-family:'trebuchet ms', 'lucida grande', 'lucida sans unicode', 'lucida sans', tahoma, sans-serif;line-height:18px;letter-spacing:0;color:#FFFFFF;font-size:12px"><br><strong><a target="_blank" href="https://viewstripo.email" style="mso-line-height-rule:exactly;text-decoration:none;color:#FFFFFF;font-size:12px">Privacy police</a> | <a target="_blank" href="" style="mso-line-height-rule:exactly;text-decoration:none;color:#FFFFFF;font-size:12px">Unsubscribe</a></strong></p></td>
-                     </tr>
-                   </table></td>
-                 </tr>
-               </table></td>
-             </tr>
-           </table></td>
-         </tr>
-       </table></td>
-     </tr>
+      </tr>
    </table>
   </div>
  </body>
-</html>
-  `
+</html>`
 }
