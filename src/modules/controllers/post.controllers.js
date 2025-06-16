@@ -27,8 +27,6 @@ export const commentPost=ErrorHandlerService(async(req,res)=>{
     makerId:req.body.makerId,
     makerModel:req.body.makerModel
   })
-  console.log(req.body);
   if(!makeComment) throw new AppError("comment not created",400);
   res.status(200).json({message:"comment added",data:makeComment})
 })
-

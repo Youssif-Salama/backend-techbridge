@@ -66,7 +66,6 @@ const searchMiddleware = (keys) => (req, res, next) => {
 
 const lowSearchMiddleware = (filterKeys = [],forWhat) => (req, res, next) => {
   if(!req.query.word) return next();
-  console.log(req.query);
 
   const { word = "", skipAddons } = req.query;
   const searchWord = new RegExp(word.trim(), "i");
@@ -79,7 +78,7 @@ const lowSearchMiddleware = (filterKeys = [],forWhat) => (req, res, next) => {
   if(forWhat=="company"){
     regexSearchFields=["Title","Description","Email"]
   }
-  if(forWhat=="company"){
+  else if(forWhat=="post"){
     regexSearchFields=["title", "description","hashtags"]
   }
   const searchConditions = regexSearchFields.map((key) => ({
