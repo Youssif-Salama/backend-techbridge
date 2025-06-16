@@ -34,24 +34,33 @@ export const signup = ErrorHandlerService(async (req, res) => {
     to: createUser.Email,
     subject: "signup verification email",
     fun: "verifyTemplate",
-    funParams: { link: `${process.env.REMOTE_BASE_URL}/api/v1/auth/verify/${jwtEncodingService({ _id: createUser._id })}`,name:createUser.Fname || createUser.Title },
+    funParams: { link: `${process.env.REMOTE_BASE_URL}:${process.env.BE_PORT}/api/v1/auth/verify/${jwtEncodingService({ _id: createUser._id })}`,name:createUser.Fname || createUser.Title },
   });
   res.status(201).json({
-    message: "user created successfully, check your email",
-    data: createUser,
+    message: "created successfully, check your email",
   });
 });
 
 export const verifyEmail = ErrorHandlerService(async (req, res) => {
   const { token } = req.params;
   const decodedToken = jwtDecodingService(token);
+
   const user = await userModel.findOne({ _id: decodedToken._id });
-  if (!user) {
+  const company = await companyModel.findOne({ _id: decodedToken._id });
+
+  if (!user && !company) {
     throw new AppError("invalid token",498);
   }
-  user.Verified = true;
-  await user.save();
-  res.redirect(process.env.REMOTE_BASE_URL+":"+process.env.FE_PORT+"/login");
+  if(user){
+
+    user.Verified = true;
+    await user.save();
+  }
+  else{
+    company.Verified = true;
+    await company.save();
+  }
+    res.redirect(process.env.REMOTE_BASE_URL+":"+process.env.FE_PORT+"/login");
 });
 
 
