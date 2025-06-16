@@ -33,7 +33,8 @@ const companySchema=new mongoose.Schema({
   Address:String,
   Type:{
     type:String,
-    enum:["tech","health","beauty","software","it"]
+    enum:["tech","health","beauty","software","it"],
+    default:"tech"
   },
   Followers:[{
       type:mongoose.Schema.Types.ObjectId,
