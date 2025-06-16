@@ -5,6 +5,8 @@ import { sendEmailService } from "../../services/nodemailer.services.js";
 import otpGeneratorService from "../../services/otp.services.js";
 import companyModel from "../models/company.model.js";
 import userModel from "../models/user.model.js";
+import env from "dotenv";
+env.config();
 
 export const signup = ErrorHandlerService(async (req, res) => {
   const { Password,Name,Email,Phone,IsUser } = req.body;
@@ -32,7 +34,7 @@ export const signup = ErrorHandlerService(async (req, res) => {
     to: createUser.Email,
     subject: "signup verification email",
     fun: "verifyTemplate",
-    funParams: { link: `http://localhost:3000/api/v1/auth/verify/${jwtEncodingService({ _id: createUser._id })}`,name:createUser.Fname || createUser.Title },
+    funParams: { link: `${process.env.REMOTE_BASE_URL}/api/v1/auth/verify/${jwtEncodingService({ _id: createUser._id })}`,name:createUser.Fname || createUser.Title },
   });
   res.status(201).json({
     message: "user created successfully, check your email",
@@ -49,7 +51,7 @@ export const verifyEmail = ErrorHandlerService(async (req, res) => {
   }
   user.Verified = true;
   await user.save();
-  res.redirect("http://localhost:3000/login");
+  res.redirect(process.env.REMOTE_BASE_URL+":"+process.env.FE_PORT+"/login");
 });
 
 
