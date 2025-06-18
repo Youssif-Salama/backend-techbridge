@@ -12,6 +12,7 @@ import { followProfile, getProfileAnalytics, profileView } from "../src/modules/
 import { authentication } from "../src/middlewares/auth.middleware.js";
 import jobRouter from "../src/modules/routes/job.routes.js";
 import applicationRouter from "../src/modules/routes/application.routes.js";
+import messageRouter from "../src/modules/routes/message.routes.js";
 
 const v1Router = Router();
 
@@ -25,6 +26,7 @@ v1Router.use("/post", postRouter);
 v1Router.use("/comment", commentRouter);
 v1Router.use("/job", jobRouter);
 v1Router.use("/application", applicationRouter);
+v1Router.use("/message", messageRouter);
 v1Router.use("/ai", aiRouter);
 v1Router.post("/follow", authentication, followProfile);
 v1Router.post("/analytics", authentication, getProfileAnalytics);

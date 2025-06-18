@@ -2,15 +2,16 @@ import {Router} from "express";
 import { authentication, authorizationMine } from "../../middlewares/auth.middleware.js";
 import { deleteQueryMiddleware, getQueryMiddleware, postQueryMiddleware, updateQueryMiddleware } from "../../middlewares/query.middlewares.js";
 import postModel from "../models/post.model.js";
-import { addMakerIdToBodyMiddleware, combineFilesWithBodyMiddleware, executionMiddleware } from "../../middlewares/common.middlewares.js";
+import { addMakerIdToBodyMiddleware, combineFilesWithBodyMiddleware, executionMiddleware, validatorMiddleware } from "../../middlewares/common.middlewares.js";
 import { upload } from "../../services/multer.services.js";
 import { filterFeatureMiddleware, filterQueryUponRelationByIdMiddleware, lowSearchMiddleware, paginationFeatureMiddleware, populateMiddleware, searchMiddleware, selectorMiddleware, sortingFeatureMiddlware } from "../../middlewares/features.middlewares.js";
 import { commentPost, likePost } from "../controllers/post.controllers.js";
 import commentModel from "../models/comment.model.js";
+import { createPostValidationSchema, updatePostValidationSchema } from "../../validators/post.validators.js";
 
 const postRouter=Router();
 
-postRouter.post("/",authentication,upload.array("files"),addMakerIdToBodyMiddleware,combineFilesWithBodyMiddleware,postQueryMiddleware(postModel),executionMiddleware({
+postRouter.post("/",authentication,upload.array("files"),addMakerIdToBodyMiddleware,combineFilesWithBodyMiddleware,validatorMiddleware(createPostValidationSchema),postQueryMiddleware(postModel),executionMiddleware({
   success:{
     message:"post added successfully",
     statusCode:200
@@ -104,7 +105,7 @@ postRouter.delete("/:id",authentication,authorizationMine(postModel),deleteQuery
   }
 }));
 
-postRouter.put("/:id",authentication,authorizationMine(postModel),upload.array("files"),combineFilesWithBodyMiddleware,updateQueryMiddleware(postModel),
+postRouter.put("/:id",authentication,authorizationMine(postModel),validatorMiddleware(updatePostValidationSchema),upload.array("files"),combineFilesWithBodyMiddleware,updateQueryMiddleware(postModel),
 filterFeatureMiddleware("_id","id"),executionMiddleware({
   success:{
     message:"post updated successfully",

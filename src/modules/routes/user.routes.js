@@ -2,7 +2,7 @@ import {Router} from "express";
 import { getQueryMiddleware } from "../../middlewares/query.middlewares.js";
 import { filterQueryUponRelationByIdMiddleware, paginationFeatureMiddleware, populateMiddleware, searchMiddleware, sortingFeatureMiddlware } from "../../middlewares/features.middlewares.js";
 import userModel from "../models/user.model.js";
-import { executionMiddleware } from "../../middlewares/common.middlewares.js";
+import { executionMiddleware, validatorMiddleware } from "../../middlewares/common.middlewares.js";
 import { addASkill, changeImage, deleteASkill, getMyData, updateMyData, updateSkillsAndLanguages, userMetaData } from "../controllers/user.controllers.js";
 import { authentication } from "../../middlewares/auth.middleware.js";
 import experienceModel from "../models/experience.model.js";
@@ -11,6 +11,7 @@ import educationModel from "../models/education.model.js";
 import applicationModel from "../models/application.model.js";
 import { myAppliedJobs } from "../middlewares/user.middlewares.js";
 import { upload } from "../../services/multer.services.js";
+import { addSkillValidationSchema, updateMyDataValidationSchema, updateMySkillsValidationSchema } from "../../validators/user.validators.js";
 
 const userRouter=Router();
 const usersSearchKeys=["Fname","Lname","Email","Address.country","Address.city","Address.state","Address.street","Address.zipCode","Address.countryCode","skills","Languages"];
@@ -29,11 +30,11 @@ userRouter.get("/",authentication,getQueryMiddleware(userModel),searchMiddleware
 userRouter.get("/meta-data",authentication,userMetaData);
 userRouter.get("/my-data",authentication,getMyData);
 
-userRouter.put("/my-data",authentication,updateMyData);
-userRouter.put("/my-skills-languages",authentication,updateSkillsAndLanguages);
+userRouter.put("/my-data",authentication,validatorMiddleware(updateMyDataValidationSchema),updateMyData);
+userRouter.put("/my-skills-languages",authentication,validatorMiddleware(updateMySkillsValidationSchema),updateSkillsAndLanguages);
 userRouter.put("/change-image",authentication,upload.array("files"),changeImage);
 
-userRouter.post("/add-skill",authentication,addASkill);
+userRouter.post("/add-skill",authentication,validatorMiddleware(addSkillValidationSchema),addASkill);
 userRouter.delete("/delete-skill",authentication,deleteASkill);
 
 userRouter.get("/my-experience",authentication,getQueryMiddleware(experienceModel),filterQueryUponRelationByIdMiddleware("makerId"),sortingFeatureMiddlware("createdAt","asc"),paginationFeatureMiddleware(20,0),executionMiddleware({

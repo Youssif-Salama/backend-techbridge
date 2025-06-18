@@ -29,7 +29,7 @@ export const signup = ErrorHandlerService(async (req, res) => {
     ...req.body,
     Password: hashedPassword,
   });
-  if(!createUser) throw new AppError("user not created",400);
+  if(!createUser) throw new AppError("failed",400);
   sendEmailService({
     to: createUser.Email,
     subject: "signup verification email",
@@ -68,11 +68,12 @@ export const login = ErrorHandlerService(async (req, res) => {
   const { Email, Password, Remember } = req.body;
   const user = await userModel.findOne({ Email });
   const company = await companyModel.findOne({ Email });
-  if (!user && !company) throw new AppError("User not found", 404);
+  if (!user && !company) throw new AppError("invalid credentials", 404);
+  if(user && user.Verified==false) throw new AppError("invalid credentials", 401);
   let result = user ? user : company;
   const isPasswordMatch = await bcryptCompareService(Password, result.Password);
-  if (!isPasswordMatch) throw new AppError("Password does not match", 401);
-  const expiresIn = Remember ? '30d' : '1h';
+if (!isPasswordMatch) throw new AppError("Password does not match", 401);
+  const expiresIn = Remember ? '500h' : '1h';
   const token = jwtEncodingService({ id: result._id, email: result.Email,type:result.Type?"company":"user" }, expiresIn);
   res.status(200).json({
     message: "Login successful",
@@ -83,7 +84,7 @@ export const login = ErrorHandlerService(async (req, res) => {
 export const resetPasswordReq=ErrorHandlerService(async(req,res)=>{
   const user=req.findUser;
   const otp=otpGeneratorService(6);
-  let exp=Remember?"30d":"1d";
+  let exp=Remember?"500h":"1d";
   const token=jwtEncodingService({id:user._id,Email:user.Email,otp},exp);
   sendEmailService({
     to:user.Email,
@@ -99,9 +100,9 @@ export const resetPasswordDo=ErrorHandlerService(async(req,res)=>{
   const {otp,newPassword}=req.body;
   const {Email,otp:savedOtp}=jwtDecodingService(req.body.resetPasswordToken);
   const user=await userModel.findOne({Email});
-  if(!user) throw new AppError("user not found",404);
+  if(!user) throw new AppError("invalid credentials",404);
   const isOtpMatch=otp.toString()==savedOtp.toString();
-  if(!isOtpMatch) throw new AppError("otp not match",401);
+  if(!isOtpMatch) throw new AppError("invalid credentials",401);
   const hashedPassword=await bcryptHashingService(newPassword);
   user.Password=hashedPassword;
   await user.save();

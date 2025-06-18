@@ -93,6 +93,7 @@ export const updateMyData = ErrorHandlerService(async (req, res) => {
 
 export const changeImage = ErrorHandlerService(async (req, res) => {
   const files = req.files;
+  if(files.length==0) return res.status(400).json({message:"please upload an image"});
   let profileImage = {
     name: files[0].originalname,
     url: files[0].path,

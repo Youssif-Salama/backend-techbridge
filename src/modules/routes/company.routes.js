@@ -3,9 +3,10 @@ import { authentication } from "../../middlewares/auth.middleware.js";
 import { addEmployees, changeBanner, changeImage, companyMetaData, deleteEmployee, updateMyData, updateMyEmployees } from "../controllers/company.controllers.js";
 import { getQueryMiddleware } from "../../middlewares/query.middlewares.js";
 import { lowSearchMiddleware, paginationFeatureMiddleware, sortingFeatureMiddlware } from "../../middlewares/features.middlewares.js";
-import { executionMiddleware } from "../../middlewares/common.middlewares.js";
+import { executionMiddleware, validatorMiddleware } from "../../middlewares/common.middlewares.js";
 import companyModel from "../models/company.model.js";
 import { upload } from "../../services/multer.services.js";
+import { updateMyDataValidationSchema } from "../../validators/company.validators.js";
 
 const companyRouter = Router();
 
@@ -26,6 +27,6 @@ companyRouter.get("/",authentication,getQueryMiddleware(companyModel),sortingFea
 }));
 
 companyRouter.get("/meta-data",authentication,companyMetaData);
-companyRouter.put("/my-data",authentication,updateMyData);
+companyRouter.put("/my-data",authentication,validatorMiddleware(updateMyDataValidationSchema),updateMyData);
 companyRouter.put("/my-employees",authentication,updateMyEmployees);
 export default companyRouter;

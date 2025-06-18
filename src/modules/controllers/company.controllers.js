@@ -4,6 +4,7 @@ import employeeModel from "../models/employee.model.js";
 
 export const addEmployees=ErrorHandlerService(async(req,res)=>{
   const {employees}=req.body;
+  if(!employees) return res.status(400).json({message:"employees not found"});
   const company=req.user;
   if(!company || !company.id) return res.status(400).json({message:"company not found"});
   const findCompany=await companyModel.findById(company.id);
@@ -15,6 +16,7 @@ export const addEmployees=ErrorHandlerService(async(req,res)=>{
 
 export const deleteEmployee=ErrorHandlerService(async(req,res)=>{
   const {id}=req.body;
+  if(!id) return res.status(400).json({message:"id not found"});
   const company=req.user;
   if(!company || !company.id) return res.status(400).json({message:"company not found"});
   const findCompany=await companyModel.findById(company.id);
@@ -27,6 +29,7 @@ export const deleteEmployee=ErrorHandlerService(async(req,res)=>{
 
 export const changeImage=ErrorHandlerService(async(req,res)=>{
   const files=req.files;
+  if(files.length==0) return res.status(400).json({message:"please upload an image"});
   let profileImage={
     name:files[0].originalname,
     url:files[0].path
@@ -42,6 +45,7 @@ export const changeImage=ErrorHandlerService(async(req,res)=>{
 
 export const changeBanner=ErrorHandlerService(async(req,res)=>{
   const files=req.files;
+  if(files.length==0) return res.status(400).json({message:"please upload an image"});
   let bannerImage={
     name:files[0].originalname,
     url:files[0].path
@@ -74,6 +78,7 @@ export const updateMyData=ErrorHandlerService(async(req,res)=>{
 
 export const updateMyEmployees=ErrorHandlerService(async(req,res)=>{
   const {Employees}=req.body;
+  if(!Employees) return res.status(400).json({message:"employees not found"});
   const company=req.user;
   if(!company || !company.id) return res.status(400).json({message:"company not found"});
   const findCompany=await companyModel.findById(company.id);
@@ -91,4 +96,3 @@ export const companyMetaData=ErrorHandlerService(async(req,res)=>{
   const companyEmployees=await employeeModel.find({companyId:user.id});
   res.status(200).json({message:"data fetched successfully",data:{companyEmployees,findCompany}});
 });
-

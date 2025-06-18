@@ -5,6 +5,7 @@ import postModel from "../models/post.model.js";
 export const likePost=ErrorHandlerService(async(req,res)=>{
   const {id}=req.user;
   const {id:postId}=req.params;
+  if(!postId) throw new AppError("post not found",404);
   const findPost=await postModel.findById(postId);
   if(!findPost) throw new AppError("post not found",404);
   if(findPost.likes.includes(id)) {
@@ -20,7 +21,9 @@ export const likePost=ErrorHandlerService(async(req,res)=>{
 
 export const commentPost=ErrorHandlerService(async(req,res)=>{
   const {id:postId}=req.params;
+  if(!postId) throw new AppError("post not found",404);
   const {comment}=req.body;
+  if(!comment) throw new AppError("comment not found",404);
   const makeComment=await commentModel.create({
     comment,
     postId,

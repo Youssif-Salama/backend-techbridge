@@ -1,20 +1,27 @@
 import mongoose from "mongoose";
 
 const jobSchema=new mongoose.Schema({
-  title:String,
-  description:String,
+  title:{type:String,required:true},
+  description:{type:String,required:true},
   requirements:String,
   level:{
     type:String,
-    enum:["junior","middle","senior"]
+    enum:["junior","middle","senior"],
+    required:true
   },
   education:{
     type:String,
     enum:["high school","university","master"]
   },
-  experience:Number,
+  experience:{
+    type:Number,
+    required:true
+  },
   salary:{
-    from:Number,
+    from:{
+      type:Number,
+      required:true
+    },
     to:Number
   },
   appliers:[{
@@ -24,7 +31,8 @@ const jobSchema=new mongoose.Schema({
   expiresAt:Date,
   makerId:{
     type: mongoose.Schema.Types.ObjectId,
-    ref:"company"
+    ref:"company",
+    required:true
   }
 },{timestamps:true})
 

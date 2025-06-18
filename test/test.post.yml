@@ -1,0 +1,118 @@
+config:
+  target: "http://localhost:3000"
+  phases:
+    - duration: 60
+      arrivalRate: 10
+
+scenarios:
+  - name: "Auth Flow POST Test"
+    flow:
+      - post:
+          url: "/api/v1/auth/login"
+          headers:
+            Content-Type: "application/json"
+          json:
+            Email: "yrjo0002@gmail.com"
+            Password: "Youssif@0001"
+            Remember: false
+          capture:
+            json: "$.data.token"
+            as: "token"
+
+      # Create a new Post
+      - post:
+          url: "/api/v1/post"
+          headers: {
+            "Content-Type": "application/json",
+            "token": "{{ token }}"
+          }
+          json:
+            title: "My Awesome New Post"
+            description: "This is the detailed description of my new post. It meets the required field."
+            hashtags: "#new #awesome #post"
+          ensure:
+            status: 201
+
+      # Create a new Company
+      - post:
+          url: "/api/v1/company"
+          headers: {
+            "Content-Type": "application/json",
+            "token": "{{ token }}"
+          }
+          json:
+            Title: "Innovatech Solutions Ltd."
+            Description: "Leading the charge in innovative tech solutions."
+            Slogan: "Innovate. Integrate. Inspire."
+            Email: "contact@innovatech.example.com"
+            Phone: 1234567890
+            Password: "Password@123"
+            Address: "123 Tech Park, Silicon Valley, CA"
+            Type: "tech"
+          ensure:
+            status: 201
+
+      # Create a new Job
+      - post:
+          url: "/api/v1/job"
+          headers: {
+            "Content-Type": "application/json",
+            "token": "{{ token }}"
+          }
+          json:
+            title: "Senior Software Engineer (Backend)"
+            description: "Join our dynamic team to build scalable backend systems."
+            requirements: "5+ years experience with Node.js, MongoDB, microservices. Strong problem-solving skills."
+            level: "senior"
+            education: "university"
+            experience: 5
+            salary: { from: 80000, to: 120000 }
+            location: "Remote"
+            expiresAt: "2024-12-31T23:59:59.000Z"
+          ensure:
+            status: 201
+
+      # Create a new Application
+      - post:
+          url: "/api/v1/application"
+          headers: {
+            "Content-Type": "application/json",
+            "token": "{{ token }}"
+          }
+          json:
+            jobId: "some_valid_job_object_id"
+            cover: "Dear Hiring Manager, I am very interested in this position..."
+          ensure:
+            status: 201
+
+      - post:
+          url: "/api/v1/user"
+          headers: {
+            "Content-Type": "application/json",
+            "token": "{{ token }}"
+          }
+          json:
+            Fname: "Test"
+            Lname: "User"
+            Email: "testuser.post@example.com"
+            Password: "Password@456"
+            Phone: 9876543210
+            Description: "A passionate developer."
+            Address: "456 User Lane, Test City"
+            Gender: "male"
+          ensure:
+            status: 201
+
+      # Create a new Message
+      # - post:
+      #     url: "/api/v1/message"
+      #     headers: {
+      #       "Content-Type": "application/json",
+      #       "token": "{{ token }}"
+      #     }
+      #     json:
+      #       toId: "some_recipient_object_id"
+      #       makerModel: "user"
+      #       message: "Hello, this is a test message created via POST."
+      #     ensure:
+      #       status: 201

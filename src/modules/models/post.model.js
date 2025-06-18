@@ -24,11 +24,13 @@ const postSchema = new mongoose.Schema(
     makerId: {
       type: mongoose.Schema.Types.ObjectId,
       refPath: "makerModel",
+      required: true,
     },
     makerModel: {
       type: String,
       required: true,
       enum: ["user", "company"],
+      required: true,
     },
   },
   { timestamps: true }

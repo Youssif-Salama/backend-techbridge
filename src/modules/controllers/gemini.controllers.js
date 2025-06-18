@@ -30,8 +30,8 @@ export const useGemini = ErrorHandlerService(async (req, res) => {
     - You are only allowed to generate content related to technology, AI, and software. Do not generate anything else.
 
     ### Inputs:
-    - **Title:** "${title || ""}"
-    - **Description:** "${description || ""}"
+    - **Title:** "${title || ""}" => maximum 50 words
+    - **Description:** "${description || ""}" => minimum 100 words, maximum 200 words
 
     Now, generate an optimized and engaging social media post based on the provided input.
   `.trim();

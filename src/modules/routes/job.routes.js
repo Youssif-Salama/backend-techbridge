@@ -3,13 +3,14 @@ import { authentication, authorization, authorizationMine } from "../../middlewa
 import { deleteQueryMiddleware, getQueryMiddleware, postQueryMiddleware, updateQueryMiddleware } from "../../middlewares/query.middlewares.js";
 import jobModel from "../models/job.model.js";
 import { filterFeatureMiddleware, filterQueryUponRelationByIdMiddleware, lowSearchMiddleware, paginationFeatureMiddleware, populateMiddleware, sortingFeatureMiddlware } from "../../middlewares/features.middlewares.js";
-import { executionMiddleware } from "../../middlewares/common.middlewares.js";
+import { executionMiddleware, validatorMiddleware } from "../../middlewares/common.middlewares.js";
 import companyModel from "../models/company.model.js";
 import applicationModel from "../models/application.model.js";
+import { createJobValidationSchema, updateJobValidationSchema } from "../../validators/job.validators.js";
 
 const jobRouter=Router();
 
-jobRouter.post("/",authentication,authorization({ companyModel }),postQueryMiddleware(jobModel),executionMiddleware({
+jobRouter.post("/",authentication,authorization({ companyModel }),validatorMiddleware(createJobValidationSchema),postQueryMiddleware(jobModel),executionMiddleware({
   success:{
     message:"job added successfully",
     statusCode:200
@@ -75,7 +76,7 @@ jobRouter.delete("/:id",authentication,authorization({ companyModel }),authoriza
   }
 }));
 
-jobRouter.put("/:id",authentication,authorization({ companyModel }),authorizationMine(jobModel),updateQueryMiddleware(jobModel),filterFeatureMiddleware("_id","id"),executionMiddleware({
+jobRouter.put("/:id",authentication,authorization({ companyModel }),authorizationMine(jobModel),validatorMiddleware(updateJobValidationSchema),updateQueryMiddleware(jobModel),filterFeatureMiddleware("_id","id"),executionMiddleware({
   success:{
     message:"job updated successfully",
     statusCode:200

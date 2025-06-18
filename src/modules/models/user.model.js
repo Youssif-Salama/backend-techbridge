@@ -46,7 +46,7 @@ const userSchema=new mongoose.Schema({
     type:String,
     enum:["user","company"]
   },
-  Languages:[String],
+  Languages:{type: [String], default: []},
   Gender:{
     type:String,
     enum:["male","female"]

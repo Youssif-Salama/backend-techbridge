@@ -1,0 +1,75 @@
+config:
+  target: "http://localhost:3000"
+  phases:
+    - duration: 60
+      arrivalRate: 10
+
+scenarios:
+  - name: "Auth Flow Test"
+    flow:
+      # Login request
+      - post:
+          url: "/api/v1/auth/login"
+          headers:
+            Content-Type: "application/json"
+          json:
+            Email: "yrjo0002@gmail.com"
+            Password: "Youssif@0001"
+            Remember: false
+          capture:
+            json: "$.data.token"
+            as: "token"
+
+      # Protected request with token (using your exact header format)
+      - get:
+          url: "/api/v1/post"
+          headers: {
+            "Content-Type": "application/json",
+            "token": "{{ token }}"
+          }
+          ensure:
+            status: 200
+      - get:
+          url: "/api/v1/company"
+          headers: {
+            "Content-Type": "application/json",
+            "token": "{{ token }}"
+          }
+          ensure:
+            status: 200
+      - get:
+          url: "/api/v1/job"
+          headers: {
+            "Content-Type": "application/json",
+            "token": "{{ token }}"
+          }
+          ensure:
+            status: 200
+      - get:
+          url: "/api/v1/application"
+          headers: {
+            "Content-Type": "application/json",
+            "token": "{{ token }}"
+          }
+          ensure:
+            status: 200
+      - get:
+          url: "/api/v1/user"
+          headers: {
+            "Content-Type": "application/json",
+            "token": "{{ token }}"
+          }
+          ensure:
+            status: 200
+      - get:
+          url: "/api/v1/message"
+          headers: {
+            "Content-Type": "application/json",
+            "token": "{{ token }}"
+          }
+          ensure:
+            status: 200
+
+
+#npm install -g artillery
+#artillery run test.yml
